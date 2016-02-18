@@ -446,6 +446,9 @@
          *     variable argument list of grouping values denoting a unique path to the row.  For
          *     example, calling collapseGroup('high', '10%') will collapse the '10%' subgroup of
          *     the 'high' group.
+         *
+         * @todo Combine with expandGroup
+         * @see expandGroup
          */
         function collapseGroup(varArgs) {
             var args = Array.prototype.slice.call(arguments);
@@ -455,6 +458,11 @@
             } else {
                 expandCollapseGroup(args.length - 1, args.join(groupingDelimiter), true);
             }
+
+            // Commits an edit when the control is clicked or expanded.
+            if(Slick.GlobalEditorLock.isActive()) {
+                Slick.GlobalEditorLock.commitCurrentEdit();
+            }
         }
 
         /**
@@ -462,6 +470,9 @@
          *     variable argument list of grouping values denoting a unique path to the row.  For
          *     example, calling expandGroup('high', '10%') will expand the '10%' subgroup of
          *     the 'high' group.
+         *     
+         * @todo Combine with collapseGroup
+         * @see collapseGroup
          */
         function expandGroup(varArgs) {
             var args = Array.prototype.slice.call(arguments);
@@ -470,6 +481,11 @@
                 expandCollapseGroup(arg0.split(groupingDelimiter).length - 1, arg0, false);
             } else {
                 expandCollapseGroup(args.length - 1, args.join(groupingDelimiter), false);
+            }
+
+            // Commits an edit when the control is clicked or expanded.
+            if(Slick.GlobalEditorLock.isActive()) {
+                Slick.GlobalEditorLock.commitCurrentEdit();
             }
         }
 
