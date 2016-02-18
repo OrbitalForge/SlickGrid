@@ -79,6 +79,16 @@
     function handleGridClick(e, args) {
       var item = this.getDataItem(args.row);
       if (item && item instanceof Slick.Group && $(e.target).hasClass(options.toggleCssClass)) {
+
+        /**
+         * @note This needs to be after the stopImmediatePropagation and preventDefault in order to correctly
+         * commit the edits.
+         */
+        // Commits an edit when the control is clicked or expanded.
+        if(_grid.getEditorLock().isActive()) {
+          _grid.getEditorLock().commitCurrentEdit();
+        }
+
         var range = _grid.getRenderedRange();
         this.getData().setRefreshHints({
           ignoreDiffsBefore: range.top,
