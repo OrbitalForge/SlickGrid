@@ -378,6 +378,13 @@
             } else if (item && item.__groupTotals && !item.initialized) {
                 // if this is a totals row, make sure it's calculated
                 calculateTotals(item);
+            } else if (item && item.__group) {
+                // if this is a dynamic grouped row, make sure it's updated if the formatter is specified. This may
+                // have a performance impact on larger datasets.
+                var gi = groupingInfos[item.level];
+                if (gi.isDynamic) {
+                    item.title = gi.formatter ? gi.formatter(item) : item.value;
+                }
             }
 
             return item;
